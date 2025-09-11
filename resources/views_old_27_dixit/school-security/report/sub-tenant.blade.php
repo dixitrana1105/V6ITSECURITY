@@ -1,19 +1,19 @@
 <x-layout.default>
     <div class="flex justify-center mb-4">
-        <h1 class="text-2xl font-bold">Sub Tenant List</h1>
+        <h1 class="text-2xl font-bold">Sub Users List</h1>
     </div>
       <div class="table-responsive">
         <table class="min-w-full shadow-lg rounded-lg overflow-hidden">
             <thead>
                 <tr>
                     <th class="font-bold py-2 px-6">S.No</th>
-                    <th class="font-bold py-2 px-8">Tenant ID</th>
+                    <th class="font-bold py-2 px-8">Users ID</th>
                     <th class="font-bold py-2 px-8">Flat/Office Number</th>
-                    <th class="font-bold py-2 px-8">Sub Tenant ID</th>
-                    <th class="font-bold py-2 px-8">Sub Tenant Name</th>
-                    <th class="font-bold py-2 px-8">Sub Tenant Contact Number</th>
-                    <th class="font-bold py-2 px-8">Sub Tenant WhatsApp Number</th>
-                    <th class="font-bold py-2 px-8">Sub Tenant ID Proof</th>
+                    <th class="font-bold py-2 px-8">Sub Users ID</th>
+                    <th class="font-bold py-2 px-8">Sub Users Name</th>
+                    <th class="font-bold py-2 px-8">Sub Users Contact Number</th>
+                    <th class="font-bold py-2 px-8">Sub Users WhatsApp Number</th>
+                    <th class="font-bold py-2 px-8">Sub Users ID Proof</th>
                     <th class="font-bold py-2 px-8">Status</th>
                 </tr>
             </thead>

@@ -10,7 +10,7 @@
                 <th class="font-bold py-2 px-8">In Time</th>
                 <th class="font-bold py-2 px-8">Out Time</th>
                 <th class="font-bold py-2 px-8">ID Proof</th>
-                <th class="font-bold py-2 px-8">Remark by Tenant</th>
+                <th class="font-bold py-2 px-8">Remark by Users</th>
             </tr>
         </thead>
         <tbody>

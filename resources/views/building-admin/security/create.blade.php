@@ -10,11 +10,11 @@
             <!-- Name and Contact Information -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div>
-                    <label for="name"><strong>Name</strong></label>
+                    <label for="name"><strong>Name</strong><span style="color:red">*</span></label>
                     <input id="name" type="text" name="name" placeholder="Enter Name" class="form-input" required />
                 </div>
                 <div>
-                    <label for="contact"><strong>Contact Number</strong></label>
+                    <label for="contact"><strong>Contact Number</strong><span style="color:red">*</span></label>
                     <input id="contact" name="contact" type="number" placeholder="Enter Contact Number" class="form-input" required />
                 </div>
             </div>
@@ -23,10 +23,10 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div>
                     <label for="whatsup"><strong>WhatsApp Number</strong></label>
-                    <input id="whatsup" name="whatsup" type="number" placeholder="Enter WhatsApp Number" class="form-input" required />
+                    <input id="whatsup" name="whatsup" type="number" placeholder="Enter WhatsApp Number" class="form-input"/>
                 </div>
                 <div>
-                    <label for="email"><strong>Email ID</strong></label>
+                    <label for="email"><strong>Email ID</strong><span style="color:red">*</span></label>
                     <div class="flex">
                         <div class="bg-[#eee] flex justify-center items-center ltr:rounded-l-md rtl:rounded-r-md px-3 font-semibold border ltr:border-r-0 rtl:border-l-0 border-[#e0e6ed] dark:border-[#17263c] dark:bg-[#1b2e4b]">@</div>
                         <input id="email" type="email" name="email" placeholder="Enter Email" class="form-input ltr:rounded-l-none rtl:rounded-r-none" required />
@@ -40,7 +40,7 @@
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div>
-                    <label for="current_address_1"><strong>Address 1</strong></label>
+                    <label for="current_address_1"><strong>Address 1</strong><span style="color:red">*</span></label>
                     <input id="current_address_1" name="current_address_1" type="text" placeholder="Enter Address 1" class="form-input" required />
                 </div>
                 <div>
@@ -50,11 +50,11 @@
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div>
-                    <label for="landmark"><strong>Landmark</strong></label>
+                    <label for="landmark"><strong>Landmark</strong><span style="color:red">*</span></label>
                     <input id="landmark" name="landmark" type="text" placeholder="Enter Landmark" class="form-input" />
                 </div>
                 <div>
-                    <label for="current_city"><strong>City</strong></label>
+                    <label for="current_city"><strong>City</strong><span style="color:red">*</span></label>
                     <input id="current_city" name="current_city" type="text" placeholder="Enter City" class="form-input" required />
                 </div>
             </div>
@@ -65,7 +65,7 @@
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div>
-                    <label for="permanent_address_1"><strong>Address 1</strong></label>
+                    <label for="permanent_address_1"><strong>Address 1</strong><span style="color:red">*</span></label>
                     <input id="permanent_address_1" name="permanent_address_1" type="text" placeholder="Enter Address 1" class="form-input" required />
                 </div>
                 <div>
@@ -75,7 +75,7 @@
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div>
-                    <label for="country"><strong>Country</strong></label>
+                    <label for="country"><strong>Country</strong><span style="color:red">*</span></label>
                     <select id="countryDropdown" name="country"  class="form-input" required onchange="filterLocations()">
                         <option value="" disabled selected>Select Country</option>
                         @isset($country)
@@ -88,17 +88,17 @@
                     </select>
                 </div>
                 <div>
-                    <label for="state"><strong>State</strong></label>
+                    <label for="state"><strong>State</strong><span style="color:red">*</span></label>
                     <select id="stateDropdown" name="state"  class="form-input" required onchange="filterLocations()">
                         <option value="" disabled selected>Select State</option>
 
                     </select>
                 </div>
             </div>
-            
+
             <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div>
-                    <label for="city"><strong>City</strong></label>
+                    <label for="city"><strong>City</strong><span style="color:red">*</span></label>
                     <select id="cityDropdown" name="city"  class="form-input" required>
                         <option value="" disabled selected>Select City</option>
 
@@ -106,18 +106,18 @@
                 </div>
 
                     <div>
-                        <label for="workingFromDate"><strong>Working From Date</strong></label>
+                        <label for="workingFromDate"><strong>Working From Date</strong><span style="color:red">*</span></label>
                         <input id="workingFromDate" name="workingFromDate" type="date" class="form-input" required />
                     </div>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div>
-                    <label for="password"><strong>Password</strong></label>
+                    <label for="password"><strong>Password</strong><span style="color:red">*</span></label>
                     <input id="password" name="password" type="number" placeholder="Enter Password" class="form-input" required />
                 </div>
                 <div>
-                    <label for="secret_key"><strong>Secret_key</strong></label>
+                    <label for="secret_key"><strong>Secret_key</strong><span style="color:red">*</span></label>
                     <input id="secret_key" name="secret_key" type="number" placeholder="Enter secret_key" class="form-input" required />
                 </div>
             </div>
@@ -125,11 +125,11 @@
             <!-- Photo ID and Address Proof Upload -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div>
-                    <label for="photoId"><strong>Photo ID (Upload)</strong></label>
+                    <label for="photoId"><strong>Photo ID (Upload)</strong><span style="color:red">*</span></label>
                     <input type="file" id="photoId" name="photo" class="form-input" required />
                 </div>
                 <div>
-                    <label for="addressProof"><strong>Address Proof (Upload)</strong></label>
+                    <label for="addressProof"><strong>Address Proof (Upload)</strong><span style="color:red">*</span></label>
                     <input type="file" id="addressProof" name="addressproof" class="form-input" required />
                 </div>
             </div>
@@ -137,16 +137,13 @@
             <!-- Working From Date -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div>
-                    <label for="tenantPhoto"><strong>Photo (Upload)</strong></label>
+                    <label for="tenantPhoto"><strong>Photo (Upload)</strong><span style="color:red">*</span></label>
                     <input type="file" id="tenantPhoto" name="tenantPhoto" class="form-input" required />
                 </div>
-                <div>
-                    <label for="logo"><strong>Logo</strong></label>
-                    <input  type="file" id="Logo" name="logo" class="form-input" required />
-                </div>
+
             </div>
 
-           
+
 
             <!-- Submit Button -->
             <div>

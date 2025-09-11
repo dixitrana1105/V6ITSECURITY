@@ -67,7 +67,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div>
                     <label for="notenant"><strong>No. Of User</strong></label>
-                    <input id="notenant" name="notenant" type="number" placeholder="no tenant person" class="form-input" required/>
+                    <input id="notenant" name="notenant" type="number" placeholder="no Users person" class="form-input" required/>
                 </div>
                 <div>
                     <label for="security"><strong>No. Security Person</strong></label>

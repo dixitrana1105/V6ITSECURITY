@@ -320,6 +320,8 @@ Route::get('/building-admin/reader-index', [BuildingCardController::class, 'inde
 
 Route::get('/building-admin/sub-tenant', [TenantController::class, 'sub_tenant_index'])->name('building-admin.sub-tenant');
 Route::get('/building-admin/visitor-log', [TenantController::class, 'visitor_log_index'])->name('building-admin.visitor-log');
+Route::get('/building-admin/current-visitor-log', [TenantController::class, 'current_visitor_log_index'])->name('building-admin.current-visitor-log-index');
+
 Route::get('/building-admin/password-reset', [PasswordChangeController::class, 'password_reset'])->name('building-admin.password-reset');
 
 Route::get('/building-admin/key-reset', [KeyChangeController::class, 'key_reset'])->name('building-admin.key-reset');

@@ -34,54 +34,76 @@
                             <p class="text-base font-bold leading-normal text-white-dark">Enter your email and password to login</p>
                         </div>
                         <form id="loginForm" class="space-y-5 dark:text-white" method="POST" action="{{ route('school-admin.login') }}">
-                            @csrf
+    @csrf
 
-                            <div>
-                                <label for="Email">User Name</label>
-                                <div class="relative text-white-dark">
-                                    <input id="Email" name="email" type="email" placeholder="Enter Email" class="form-input ps-10 placeholder:text-white-dark" required />
-                                    <span class="absolute start-4 top-1/2 -translate-y-1/2">
-                                        <!-- Email Icon SVG -->
-                                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-                                            <path opacity="0.5" d="M10.65 2.25H7.35..." fill="currentColor" />
-                                            <path d="M14.3465 6.02574C14.609 5.80698..." fill="currentColor" />
-                                        </svg>
-                                    </span>
-                                </div>
-                            </div>
+    <!-- Email -->
+    <div>
+        <label for="Email">User Name<span class="text-red-500">*</span></label>
+        <div class="relative text-white-dark">
+            <input id="Email" name="email" type="email"
+                   value="{{ old('email') }}"
+                   placeholder="Enter Email"
+                   class="form-input ps-10 placeholder:text-white-dark" required />
+            <span class="absolute start-4 top-1/2 -translate-y-1/2">
+                <!-- Email Icon -->
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                    <path opacity="0.5" d="M10.65 2.25H7.35..." fill="currentColor" />
+                    <path d="M14.3465 6.02574C14.609 5.80698..." fill="currentColor" />
+                </svg>
+            </span>
+        </div>
+        @error('email')
+            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+        @enderror
+    </div>
 
-                            <div>
-                                <label for="Password">Password</label>
-                                <div class="relative text-white-dark">
-                                    <input id="Password" name="password" type="password" placeholder="Enter Password" class="form-input ps-10 placeholder:text-white-dark" required />
-                                    <span class="absolute start-4 top-1/2 -translate-y-1/2">
-                                        <!-- Password Icon SVG -->
-                                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-                                            <path opacity="0.5" d="M1.5 12C1.5 9.87868..." fill="currentColor" />
-                                            <path d="M6 12.75C6.41421 12.75..." fill="currentColor" />
-                                        </svg>
-                                    </span>
-                                </div>
-                            </div>
+    <!-- Password -->
+    <div>
+        <label for="Password">Password<span class="text-red-500">*</span></label>
+        <div class="relative text-white-dark">
+            <input id="Password" name="password" type="password"
+                   placeholder="Enter Password"
+                   class="form-input ps-10 placeholder:text-white-dark" required />
+            <span class="absolute start-4 top-1/2 -translate-y-1/2">
+                <!-- Password Icon -->
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                    <path opacity="0.5" d="M1.5 12C1.5 9.87868..." fill="currentColor" />
+                    <path d="M6 12.75C6.41421 12.75..." fill="currentColor" />
+                </svg>
+            </span>
+        </div>
+        @error('password')
+            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+        @enderror
+    </div>
 
-                            <div>
-                                <label for="SecretKey">Secret Key</label>
-                                <div class="relative text-white-dark">
-                                    <input id="SecretKey" name="secret_key" type="password" placeholder="Enter Secret Key" class="form-input ps-10 placeholder:text-white-dark" />
-                                    <span class="absolute start-4 top-1/2 -translate-y-1/2">
-                                        <!-- Secret Key Icon SVG -->
-                                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-                                            <path opacity="0.5" d="M1.5 12C1.5 9.87868..." fill="currentColor" />
-                                            <path d="M6 12.75C6.41421 12.75..." fill="currentColor" />
-                                        </svg>
-                                    </span>
-                                </div>
-                            </div>
+    <!-- Secret Key -->
+    <div>
+        <label for="SecretKey">Secret Key<span class="text-red-500">*</span></label>
+        <div class="relative text-white-dark">
+            <input id="SecretKey" name="secret_key" type="password"
+                   placeholder="Enter Secret Key"
+                   class="form-input ps-10 placeholder:text-white-dark" />
+            <span class="absolute start-4 top-1/2 -translate-y-1/2">
+                <!-- Secret Key Icon -->
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                    <path opacity="0.5" d="M1.5 12C1.5 9.87868..." fill="currentColor" />
+                    <path d="M6 12.75C6.41421 12.75..." fill="currentColor" />
+                </svg>
+            </span>
+        </div>
+        @error('secret_key')
+            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+        @enderror
+    </div>
 
-                            <button type="submit" class="btn btn-gradient !mt-6 w-full border-0 uppercase shadow-[0_10px_20px_-10px_rgba(67,97,238,0.44)]">
-                                Sign In
-                            </button>
-                        </form>
+    <!-- Submit -->
+    <button type="submit"
+            class="btn btn-gradient !mt-6 w-full border-0 uppercase shadow-[0_10px_20px_-10px_rgba(67,97,238,0.44)]">
+        Sign In
+    </button>
+</form>
+
                     </div>
                     <p class="absolute bottom-6 w-full text-center dark:text-white">
                         © <span id="footer-year">2022</span>. V6IT All Rights Reserved.

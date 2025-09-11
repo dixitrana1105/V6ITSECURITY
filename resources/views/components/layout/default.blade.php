@@ -127,6 +127,7 @@
                 'building-admin/new-ticket',
                 'building-admin/open-ticket',
                 'building-admin/hold-ticket',
+                'building-admin/current-visitor-log',
                 'building-admin/close-ticket',
                 'building-admin/myTicket-index',
                 'building-admin/myTicket-create',

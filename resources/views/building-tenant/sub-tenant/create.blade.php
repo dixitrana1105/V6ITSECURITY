@@ -88,8 +88,8 @@
                             placeholder="Enter Email" class="form-input" required />
                     </div>
                     <div>
-                        <label for="password"><strong>Password</strong></label>
-                        <input id="password" name="password" type="password"
+                        <label for="password"><strong>Password<span class="text-red-500">*</span></strong></label>
+                        <input id="password" name="password" type="text"
                             placeholder="password" class="form-input" required />
                     </div>
                     <button type="submit" class="btn btn-primary !mt-6">Submit</button>

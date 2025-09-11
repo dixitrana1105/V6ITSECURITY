@@ -76,7 +76,7 @@
                 <div>
                     <label for="country"><strong>Country</strong></label>
                     <select id="countryDropdown" name="country"  class="form-input" required onchange="filterLocations()">
-                        <option value="" disabled selected>Select Country</option> 
+                        <option value="" disabled selected>Select Country</option>
                         @isset($country)
                         @foreach ($country as $countryList)
                             <option value="{{ $countryList->id }}"
@@ -88,13 +88,13 @@
                 <div>
                     <label for="state"><strong>State</strong></label>
                     <select id="stateDropdown" name="state"  class="form-input" required onchange="filterLocations()">
-                        <option value="" disabled selected>Select State</option>                                                                                                      
+                        <option value="" disabled selected>Select State</option>
                     </select>
                 </div>
                 <div>
                     <label for="permanent_city"><strong>City</strong></label>
                     <select id="cityDropdown" name="city"  class="form-input" required>
-                        <option value="" disabled selected>Select City</option>                                                                                                    
+                        <option value="" disabled selected>Select City</option>
                     </select>
                 </div>
             </div>
@@ -118,11 +118,11 @@
                 <div>
                     <label for="workingFromDate"><strong>Working From Date</strong></label>
                     <input id="workingFromDate" name="workingFromDate" type="date" class="form-input" required />
-                </div>                
+                </div>
             <div>
-    <label for="password"><strong>Password</strong></label>
+    <label for="password"><strong>Password<span class="text-red-500">*</span></strong></label>
     <div style="position: relative;">
-        <input id="password" type="password" name="password" placeholder="password" class="form-input" required />
+        <input id="password" type="text" name="password" placeholder="password" class="form-input" required />
         <span style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;" onclick="this.previousElementSibling.type = this.previousElementSibling.type === 'password' ? 'text' : 'password'">👁️</span>
     </div>
 </div>
@@ -130,8 +130,8 @@
                     <label for="secretkey"><strong>Secret Key</strong></label>
                     <input id="secretkey" name="secretkey" type="text" placeholder="Enter secretkey" class="form-input" required />
                 </div>
-            </div>          
-           
+            </div>
+
             <!-- Submit Button -->
             <div>
                 <button type="submit" class="btn btn-primary !mt-6">Submit</button>
@@ -148,14 +148,14 @@
             var countryId = document.getElementById('countryDropdown').value;
             var stateDropdown = document.getElementById('stateDropdown');
             var cityDropdown = document.getElementById('cityDropdown');
-    
+
             // Get the currently selected state (if any)
             var selectedStateId = stateDropdown.value;
-    
+
             // Clear existing options
             stateDropdown.innerHTML = '<option value="">Select State</option>';
             cityDropdown.innerHTML = '<option value="">Select City</option>';
-    
+
             // Show states corresponding to the selected country
             var states = {!! json_encode($states) !!};
             states.forEach(function(state) {
@@ -169,7 +169,7 @@
                     stateDropdown.appendChild(option);
                 }
             });
-    
+
             // Show cities corresponding to the selected state
             var cities = {!! json_encode($cities) !!};
             cities.forEach(function(city) {

@@ -16,24 +16,24 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                     <div>
-                        <label for="SecurityId"><strong>Security ID </strong></label>
+                        <label for="SecurityId"><strong>Security ID </strong><span style="color:red">*</span></label>
                         <input id="SecurityId" type="text" name="security_id" placeholder="Auto Generate" value="{{ $security->security_id }}" class="form-input" required readonly/>
                     </div>
                     <div>
-                        <label for="BuildingId"><strong>Building ID </strong></label>
+                        <label for="BuildingId"><strong>Building ID </strong><span style="color:red">*</span></label>
                         <input id="BuildingId" type="text" name="building_id" placeholder="Auto Generate" value="{{ $security->building_id }}" class="form-input" required readonly/>
                     </div>
                 </div>
-            
+
                 <!-- Name and Contact Information -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                     <div>
-                        <label for="name"><strong>Name</strong></label>
+                        <label for="name"><strong>Name</strong><span style="color:red">*</span></label>
                         <input id="name" type="text" name="name" value="{{ old('name', $security->name) }}"
                             placeholder="Enter Name" class="form-input" required />
                     </div>
                     <div>
-                        <label for="contact"><strong>Contact Number</strong></label>
+                        <label for="contact"><strong>Contact Number</strong><span style="color:red">*</span></label>
                         <input id="contact" name="contact" type="number"
                             value="{{ old('contact', $security->contact) }}" placeholder="Enter Contact Number"
                             class="form-input" required />
@@ -46,10 +46,10 @@
                         <label for="whatsup"><strong>WhatsApp Number</strong></label>
                         <input id="whatsup" name="whatsup" type="number"
                             value="{{ old('whatsup', $security->whatsup) }}" placeholder="Enter WhatsApp Number"
-                            class="form-input" required />
+                            class="form-input" />
                     </div>
                     <div>
-                        <label for="email"><strong>Email ID</strong></label>
+                        <label for="email"><strong>Email ID</strong><span style="color:red">*</span></label>
                         <div class="flex">
                             <div
                                 class="bg-[#eee] flex justify-center items-center ltr:rounded-l-md rtl:rounded-r-md px-3 font-semibold border ltr:border-r-0 rtl:border-l-0 border-[#e0e6ed] dark:border-[#17263c] dark:bg-[#1b2e4b]">
@@ -67,7 +67,7 @@
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                     <div>
-                        <label for="current_address_1"><strong>Address 1</strong></label>
+                        <label for="current_address_1"><strong>Address 1</strong><span style="color:red">*</span></label>
                         <input id="current_address_1" name="current_address_1" type="text"
                             value="{{ old('current_address_1', $security->current_address_1) }}"
                             placeholder="Enter Address 1" class="form-input" required />
@@ -81,13 +81,13 @@
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                     <div>
-                        <label for="landmark"><strong>Landmark</strong></label>
+                        <label for="landmark"><strong>Landmark</strong><span style="color:red">*</span></label>
                         <input id="landmark" name="landmark" type="text"
                             value="{{ old('landmark', $security->landmark) }}" placeholder="Enter Landmark"
                             class="form-input" />
                     </div>
                     <div>
-                        <label for="current_city"><strong>City</strong></label>
+                        <label for="current_city"><strong>City</strong><span style="color:red">*</span></label>
                         <input id="current_city" name="current_city" type="text"
                             value="{{ old('current_city', $security->current_city) }}" placeholder="Enter City"
                             class="form-input" required />
@@ -100,7 +100,7 @@
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                     <div>
-                        <label for="permanent_address_1"><strong>Address 1</strong></label>
+                        <label for="permanent_address_1"><strong>Address 1</strong><span style="color:red">*</span></label>
                         <input id="permanent_address_1" name="permanent_address_1" type="text"
                             value="{{ old('permanent_address_1', $security->permanent_address_1) }}"
                             placeholder="Enter Address 1" class="form-input" required />
@@ -114,7 +114,7 @@
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                     <div>
-                        <label for="country"><strong>Country</strong></label>
+                        <label for="country"><strong>Country</strong><span style="color:red">*</span></label>
                         <select id="countryDropdown" name="country" class="form-input" required
                             onchange="filterLocations()">
                             <option value="" disabled selected>Select Country</option>
@@ -127,7 +127,7 @@
                         </select>
                     </div>
                     <div>
-                        <label for="state"><strong>State</strong></label>
+                        <label for="state"><strong>State</strong><span style="color:red">*</span></label>
                         <select id="stateDropdown" name="state" class="form-input" required
                             onchange="filterLocations()">
                             <option value="" disabled selected>Select State</option>
@@ -141,7 +141,7 @@
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                     <div>
-                        <label for="city"><strong>City</strong></label>
+                        <label for="city"><strong>City</strong><span style="color:red">*</span></label>
                         <select id="cityDropdown" name="city" class="form-input" required>
                             <option value="" disabled selected>Select City</option>
                             @foreach ($cities as $city)
@@ -153,7 +153,7 @@
                     </div>
 
                     <div>
-                        <label for="workingFromDate"><strong>Working From Date</strong></label>
+                        <label for="workingFromDate"><strong>Working From Date</strong><span style="color:red">*</span></label>
                         <input id="workingFromDate" name="workingFromDate" type="date"
                             value="{{ old('workingFromDate', $security->workingFromDate) }}" class="form-input"
                             required />
@@ -163,7 +163,7 @@
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                     <div class="relative">
-                        <label for="password"><strong>Password</strong></label>
+                        <label for="password"><strong>Password</strong><span style="color:red">*</span></label>
                         <input id="password" name="password" type="password" placeholder="Enter Password"
                             class="form-input pr-10"  style="padding-right: 2.5rem;"  />
                         <button type="button"  style="
@@ -176,21 +176,21 @@
                         </button>
                     </div>
                     <div class="relative">
-    <label for="secret_key"><strong>Secret Key</strong></label>
-    <input 
-        id="secret_key" 
-        name="secret_key" 
-        type="password" 
-        placeholder="Enter Secret Key" 
-        class="form-input pr-10" 
-        value="{{ old('secret_key', $security->secret_key) }}" 
-        style="padding-right: 2.5rem;" 
+    <label for="secret_key"><strong>Secret Key</strong><span style="color:red">*</span></label>
+    <input
+        id="secret_key"
+        name="secret_key"
+        type="password"
+        placeholder="Enter Secret Key"
+        class="form-input pr-10"
+        value="{{ old('secret_key', $security->secret_key) }}"
+        style="padding-right: 2.5rem;"
     />
     <button style="
     padding-top: 1rem;
 "
-        type="button" 
-        class="absolute inset-y-0 right-0 pr-3 flex items-center" 
+        type="button"
+        class="absolute inset-y-0 right-0 pr-3 flex items-center"
         onclick="togglePasswordVisibility('secret_key', this)"
     >
         <i class="fas fa-eye" id="eye-icon-secret_key"></i>
@@ -206,13 +206,13 @@
                 <!-- Photo ID and Address Proof Upload -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                     <div>
-                        <label for="photoId"><strong>Photo ID (Upload)</strong></label>
+                        <label for="photoId"><strong>Photo ID (Upload)</strong><span style="color:red">*</span></label>
                         <input type="file" id="photoId" name="photo" class="form-input" />
                         <img src="{{ asset($security->photo) }}" alt="image" class="w-24 h-24 object-cover mb-5" />
 
                     </div>
                     <div>
-                        <label for="addressProof"><strong>Address Proof (Upload)</strong></label>
+                        <label for="addressProof"><strong>Address Proof (Upload)</strong><span style="color:red">*</span></label>
                         <input type="file" id="addressProof" name="addressproof" class="form-input" />
                         <img src="{{ asset($security->addressproof) }}" alt="image" class="w-24 h-24 object-cover mb-5" />
 
@@ -222,16 +222,11 @@
                 <!-- Logo Upload -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                     <div>
-                        <label for="tenantPhoto"><strong>Photo (Upload)</strong></label>
+                        <label for="tenantPhoto"><strong>Photo (Upload)</strong><span style="color:red">*</span></label>
                         <input type="file" id="tenantPhoto" name="tenantPhoto" class="form-input" />
                         <img src="{{ asset($security->tenantPhoto) }}" alt="image" class="w-24 h-24 object-cover mb-5" />
                     </div>
-                    <div>
-                        <label for="logo"><strong>Logo</strong></label>
-                        <input type="file" id="Logo" name="logo" class="form-input" />
-                        <img src="{{ asset($security->logo) }}" alt="image" class="w-24 h-24 object-cover mb-5" />
 
-                    </div>
                 </div>
 
                 <!-- Submit Button -->
@@ -276,12 +271,12 @@
             });
         }
 
-        
+
     </script>
     <script>
         function togglePasswordVisibility(inputId, button) {
             const input = document.getElementById(inputId);
-            const icon = button.querySelector('i'); 
+            const icon = button.querySelector('i');
 
             if (input.type === 'password') {
                 input.type = 'text';

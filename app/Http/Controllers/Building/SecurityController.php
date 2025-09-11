@@ -19,17 +19,17 @@ class SecurityController extends Controller
     {
         $buildingAdminId = Auth::guard('buildingadmin')->user()->id;
         // dd($buildingAdminId);
-    
+
         $statusFilter = $request->input('statusFilter', 'all');
-    
+
         $query = Security_Master::where('building_id', $buildingAdminId);
-    
+
         if ($statusFilter !== 'all') {
             $query->where('status', $statusFilter === 'active' ? 1 : 0);
         }
-    
+
         $security_data = $query->orderBy('created_at', 'desc')->get();
-    
+
         return view('building-admin.security.index', compact('security_data'));
     }
 
@@ -66,7 +66,6 @@ class SecurityController extends Controller
              'photo' => '',
             'addressproof' => '',
             'tenantPhoto' => '',
-            'logo' => '',
         ]);
 
         // dd('ok');
@@ -77,46 +76,38 @@ class SecurityController extends Controller
 
         if ($request->hasFile('photo')) {
             $destinationPath = public_path('assets/images/');
-    
+
             $photoFileName = time() . '_' . $request->file('photo')->getClientOriginalName();
             $request->file('photo')->move($destinationPath, $photoFileName);
-    
+
             $photoPath = 'assets/images/' . $photoFileName;
-        }     
+        }
 
 
 
-     
+
 
         if ($request->hasFile('addressproof')) {
             $destinationPath = public_path('assets/images/');
-    
+
             $addressproofFileName = time() . '_' . $request->file('addressproof')->getClientOriginalName();
             $request->file('addressproof')->move($destinationPath, $addressproofFileName);
-    
-            $addressproofPath = 'assets/images/' . $addressproofFileName;
-        }     
 
-      
+            $addressproofPath = 'assets/images/' . $addressproofFileName;
+        }
+
+
 
         if ($request->hasFile('tenantPhoto')) {
             $destinationPath = public_path('assets/images/');
-    
+
             $tenantPhotoFileName = time() . '_' . $request->file('tenantPhoto')->getClientOriginalName();
             $request->file('tenantPhoto')->move($destinationPath, $tenantPhotoFileName);
-    
+
             $tenantPhotoPath = 'assets/images/' . $tenantPhotoFileName;
-        }     
+        }
 
 
-        if ($request->hasFile('logo')) {
-            $destinationPath = public_path('assets/images/');
-    
-            $logoFileName = time() . '_' . $request->file('logo')->getClientOriginalName();
-            $request->file('logo')->move($destinationPath, $logoFileName);
-    
-            $logoPath = 'assets/images/' . $logoFileName;
-        }            
 
 
         $security_id = 'SU' . rand(111111, 999999);
@@ -129,18 +120,18 @@ class SecurityController extends Controller
             'building_id' => $building_id,
             'name' => $request->name,
             'contact' => $request->contact,
-            'whatsup' => $request->whatsup,
+            'whatsup' => $request->whatsup ?? null,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'secret_key' => $request->secret_key,
             'current_address_1' => $request->current_address_1,
-            'current_address_2' => $request->current_address_2,
+            'current_address_2' => $request->current_address_2 ?? null,
             'current_city' => $request->current_city,
             'landmark' => $request->landmark,
             'city' => $request->city,
             'workingFromDate' => $request->workingFromDate,
             'permanent_address_1' => $request->permanent_address_1,
-            'permanent_address_2' => $request->permanent_address_2,
+            'permanent_address_2' => $request->permanent_address_2 ?? null,
             'country' => $request->country,
             'state' => $request->state,
             'added_by' => $user,
@@ -148,7 +139,6 @@ class SecurityController extends Controller
             'photo' => $photoPath,
             'addressproof' => $addressproofPath,
             'tenantPhoto' => $tenantPhotoPath,
-            'logo' => $logoPath,
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s'),
         ]);
@@ -182,68 +172,59 @@ class SecurityController extends Controller
              'photo' => '',
             'addressproof' => '',
             'tenantPhoto' => '',
-            'logo' => '',
         ]);
-    
+
         $tenant = Security_Master::findOrFail($id);
-    
+
         $user = Auth::guard('buildingadmin')->user()->id;
-    
+
         $photoPath = $tenant->photo;
         $addressproofPath = $tenant->addressproof;
         $tenantPhotoPath = $tenant->tenantPhoto;
         $logoPath = $tenant->logo;
-    
+
         if ($request->hasFile('photo')) {
             $destinationPath = public_path('assets/images/');
-    
+
             $photoFileName = time() . '_' . $request->file('photo')->getClientOriginalName();
             $request->file('photo')->move($destinationPath, $photoFileName);
-    
+
             $photoPath = 'assets/images/' . $photoFileName;
-        }     
+        }
 
 
 
-     
+
 
         if ($request->hasFile('addressproof')) {
             $destinationPath = public_path('assets/images/');
-    
+
             $addressproofFileName = time() . '_' . $request->file('addressproof')->getClientOriginalName();
             $request->file('addressproof')->move($destinationPath, $addressproofFileName);
-    
-            $addressproofPath = 'assets/images/' . $addressproofFileName;
-        }     
 
-      
+            $addressproofPath = 'assets/images/' . $addressproofFileName;
+        }
+
+
 
         if ($request->hasFile('tenantPhoto')) {
             $destinationPath = public_path('assets/images/');
-    
+
             $tenantPhotoFileName = time() . '_' . $request->file('tenantPhoto')->getClientOriginalName();
             $request->file('tenantPhoto')->move($destinationPath, $tenantPhotoFileName);
-    
+
             $tenantPhotoPath = 'assets/images/' . $tenantPhotoFileName;
-        }     
+        }
 
 
-        if ($request->hasFile('logo')) {
-            $destinationPath = public_path('assets/images/');
-    
-            $logoFileName = time() . '_' . $request->file('logo')->getClientOriginalName();
-            $request->file('logo')->move($destinationPath, $logoFileName);
-    
-            $logoPath = 'assets/images/' . $logoFileName;
-        }            
 
 
         // dd('ok');
-    
+
         $tenant->update([
             'name' => $request->name,
             'contact' => $request->contact,
-            'whatsup' => $request->whatsup,
+            'whatsup' => $request->whatsup ?? null,
             'email' => $request->email,
             'password' => $request->password ? Hash::make($request->password) : $tenant->password,
             'secret_key' => $request->secret_key,
@@ -260,11 +241,10 @@ class SecurityController extends Controller
             'photo' => $photoPath,
             'addressproof' => $addressproofPath,
             'tenantPhoto' => $tenantPhotoPath,
-            'logo' => $logoPath,
             'edited_by' => $user,
             'status' => 1,
         ]);
-    
+
         return redirect()->route('building-admin.security-index')->with('success', 'Security updated successfully.');
     }
 

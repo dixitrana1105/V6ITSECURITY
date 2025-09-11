@@ -275,9 +275,13 @@
                         </div>
                     </button>
                     <ul x-cloak x-show="activeDropdown === 'elements'" x-collapse class="sub-menu text-gray-500">
+                         <li>
+                            <a href="/building-admin/current-visitor-log">Current Visitor Log</a>
+                        </li>
                         <li>
                             <a href="/building-admin/visitor-log">List</a>
                         </li>
+
                     </ul>
                 </li>
 

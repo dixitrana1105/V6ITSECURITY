@@ -23,10 +23,17 @@ class ApiMessageController extends Controller
         $status = $request->input('status') ?? 1;
 
         $user_id = $request->user_id;
-        $building_id = BuildingAdminTenant::where('id', $user_id)->value('building_id');
+        $user_type = $request->user_type;
+        if($user_type == 'building_security')
+        {
+        $building_id = Security_Master::where('id', $user_id)->value('building_id');
+        }else{
+           $building_id = BuildingAdminTenant::where('id', $user_id)->value('building_id');
+        }
 
 
-        $query = BuildingAdminTenant::where('building_id',$building_id)->whereNot('id', $user_id);
+
+        $query = BuildingAdminTenant::where('building_id',$building_id)->whereNull('sub_tenant_id')->whereNot('id', $user_id);
 
         if ($status !== null) {
             $query->where('status', $status);
@@ -156,7 +163,7 @@ class ApiMessageController extends Controller
                 'receiver_type' => $receiver_type,
                 'message' => $request->message,
             ]);
-            
+
             $this->sendNotificationToReciever($message);
 
             return response()->json(['success' => true, 'message' => $message], 200);
@@ -167,7 +174,7 @@ class ApiMessageController extends Controller
 
     public function sendNotificationToReciever($message)
     {
-        
+
         $reciever_id = $message->receiver_id;
         $sender_id = $message->sender_id;
         $sender_type = $message->sender_type;
@@ -175,7 +182,7 @@ class ApiMessageController extends Controller
         $receiver_building_type = 'building';
         $fcm_reciever_type = $this->fcmRecieverType($receiver_type,$receiver_building_type);
         $fcm_user_data = FcmUser::where('user_id', $reciever_id)->where('user_type', $fcm_reciever_type)->get();
-    
+
         foreach ($fcm_user_data as $fcm_user) {
             $fcm_data = [
                 'user_table_id' => $fcm_user->id,
@@ -219,7 +226,7 @@ class ApiMessageController extends Controller
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
-    
+
      public function userChatSetting(Request $request)
     {
         try {

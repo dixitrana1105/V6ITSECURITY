@@ -12,16 +12,16 @@ use App\Models\Building_Master;
 use Illuminate\Support\Facades\Auth;
 
 class BuildingController extends Controller
-{   
+{
     public function create_building()
     {
         $latestBuildingID = Building_Master::latest('building_id')->where('type','building')->first();
 
         if($latestBuildingID) {
             $lastId = intval($latestBuildingID->building_id);
-            $nextId = str_pad($lastId + 1, 5, '0', STR_PAD_LEFT);  
+            $nextId = str_pad($lastId + 1, 5, '0', STR_PAD_LEFT);
         } else {
-            $nextId = '11111'; 
+            $nextId = '11111';
         }
         $country = Country::where('status', 1)->select('name', 'id', 'code')->get();
         $states = State::select('id', 'name', 'country_id')->get();
@@ -33,10 +33,11 @@ class BuildingController extends Controller
     {
         $status = $request->input('status');
         $cityfilter = $request->input('city');
+    $buildingType = $request->input('building_type'); // ✅ new filter
 
         // dd(Auth::guard('superadmin')->user()->id);
 
-        $city = Building_Master::select('city')->where('type','building')->get(); 
+        $city = Building_Master::select('city')->where('type','building')->get();
         $query = Building_Master::with('Country','City')->where('type','building')->where('added_by',  Auth::guard('superadmin')->user()->id);
         if ($status !== null) {
             $query->where('status', $status);
@@ -46,10 +47,14 @@ class BuildingController extends Controller
             $query->where('city', $cityfilter);
         }
 
+          if ($buildingType !== null) {
+        $query->where('type_of_building', $buildingType); // ✅ filter by type
+    }
+
         $building = $query->get();
         return view('super-admin.building.index',compact('building','city'));
-    } 
-    
+    }
+
     public function edit_building($id)
     {
         $country = Country::where('status', 1)->select('name', 'id', 'code')->get();
@@ -62,7 +67,7 @@ class BuildingController extends Controller
     public function store(Request $request)
     {
 
-        $type = $request->input('type');       
+        $type = $request->input('type');
 
         if($type == 'building'){
 
@@ -95,7 +100,7 @@ class BuildingController extends Controller
             'business_name' => $request->business_name,
             'type_of_building' => $request->typeofbuilding,
             'email' => $request->email,
-            'password' => Hash::make($request->password), 
+            'password' => Hash::make($request->password),
             'secret_key' => $request->secretkey,
             'contact_person' => $request->name,
             'contact_number' => $request->contact,
@@ -140,7 +145,7 @@ class BuildingController extends Controller
             'school_id' => $request->schoolId,
             'name' => $request->schoolname,
             'email' => $request->email,
-            'password' => Hash::make($request->password), 
+            'password' => Hash::make($request->password),
             'secret_key' => $request->secretkey,
             'business_name' => $request->business_name,
             'contact_person' => $request->name,
@@ -162,13 +167,13 @@ class BuildingController extends Controller
 
 
     }
-    
+
     }
 
     public function update_building(Request $request, $id)
 {
 
-    $type = $request->input('type');       
+    $type = $request->input('type');
 
     if($type == 'building'){
 
@@ -201,7 +206,7 @@ class BuildingController extends Controller
         'business_name' => $request->business_name,
         'type_of_building' => $request->typeofbuilding,
         'email' => $request->email,
-        'password' => Hash::make($request->password), 
+        'password' => Hash::make($request->password),
         'secret_key' => $request->secretkey,
         'contact_person' => $request->name,
         'contact_number' => $request->contact,
@@ -212,7 +217,7 @@ class BuildingController extends Controller
         'country' => $request->country,
         'state' => $request->state,
         'edited_by' => $user,
-        'city' => $request->city,       
+        'city' => $request->city,
     ]);
 
     return redirect()->route('super-admin.building-index')->with('success', 'Building updated successfully.');
@@ -243,7 +248,7 @@ class BuildingController extends Controller
         'name' => $request->schoolname,
         'business_name' => $request->business_name,
         'email' => $request->email,
-        'password' => Hash::make($request->password), 
+        'password' => Hash::make($request->password),
         'secret_key' => $request->secretkey,
         'contact_person' => $request->name,
         'contact_number' => $request->contact,
@@ -279,5 +284,5 @@ class BuildingController extends Controller
 
         return redirect()->back()->with('success', 'Status updated successfully.');
     }
-   
+
 }

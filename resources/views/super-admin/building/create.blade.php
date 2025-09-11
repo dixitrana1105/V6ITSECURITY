@@ -90,9 +90,9 @@
                     <input id="business_name" type="text" name="business_name" placeholder="business name" class="form-input" required />
                 </div>
             <div>
-    <label for="password"><strong>Password</strong></label>
+    <label for="password"><strong>Password<span class="text-red-500">*</span></strong></label>
     <div style="position: relative;">
-        <input id="password" type="password" name="password" placeholder="password" class="form-input" required />
+        <input id="password" type="text" name="password" placeholder="password" class="form-input" required />
         <span style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;" onclick="this.previousElementSibling.type = this.previousElementSibling.type === 'password' ? 'text' : 'password'">👁️</span>
     </div>
 </div>

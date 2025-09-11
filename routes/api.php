@@ -81,3 +81,7 @@ Route::post('/user-chat-setting', [ApiMessageController::class, 'userChatSetting
 Route::get('/get-cards', [CardManageController::class, 'getCard']);
 Route::any('/card-assign', [CardManageController::class, 'visitor_card_assign_api']);
 Route::get('/get-serialld', [CardManageController::class, 'getSerialId']);
+
+Route::get('/get-preapprove-visitor', [PreApproveVisitore::class, 'getPreApproveVisitorBybuilding']);
+Route::get('/get-preapprove-visitor-details', [PreApproveVisitore::class, 'getPreApproveVisitorDetails']);
+Route::post('/store-preApprove-visitor', [PreApproveVisitore::class, 'preApproveVisitorStore']);

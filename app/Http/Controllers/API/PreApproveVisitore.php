@@ -107,35 +107,37 @@ class PreApproveVisitore extends Controller
         return null;
     }
 
-    public function getPreapproveVisitore(Request $request)
-    {
-        // dd($request);
-        $building_id = $request->building_id;
-        $tenant_flat_office_no = $request->tenant_flat_office_no;
-        $date_from = $request->date_from
+    public function getPreapproveVisitore(Request $request, $building_id)
+{
+            $building_id = $request->building_id;
+
+    $tenant_flat_office_no = $request->tenant_flat_office_no;
+
+    $date_from = $request->date_from
         ? Carbon::parse($request->date_from)->startOfDay()->setTimezone('UTC')
         : Carbon::now()->startOfDay()->setTimezone('UTC');
 
-        $date_to = $request->date_to
-            ? Carbon::parse($request->date_to)->endOfDay()->setTimezone('UTC')
-            : Carbon::now()->endOfDay()->setTimezone('UTC');
+    $date_to = $request->date_to
+        ? Carbon::parse($request->date_to)->endOfDay()->setTimezone('UTC')
+        : Carbon::now()->endOfDay()->setTimezone('UTC');
 
-        $visitorMasterIds = Visitor_Master::where('building_id', $building_id)
-            ->where('created_at', '>=', $date_from)
-            ->where('created_at', '<=', $date_to)
-            ->pluck('visitor_id');
+    $visitorMasterIds = Visitor_Master::where('building_id', $building_id)
+        ->whereBetween('created_at', [$date_from, $date_to])
+        ->pluck('visitor_id');
 
-        $visitors = TenantVisitor::where('building_id', $building_id)->where('created_at', '>=', $date_from)->where('created_at', '<=', $date_to);
+    $visitors = TenantVisitor::where('building_id', $building_id)
+        ->whereBetween('created_at', [$date_from, $date_to]);
 
-        if ($tenant_flat_office_no) {
-            $visitors->where('tenant_flat_office_no', $tenant_flat_office_no);
-        }
-
-        $visitors = $visitors->whereNotIn('visitor_id', $visitorMasterIds)
-            ->get(['full_name', 'visitor_id']);
-
-        return response()->json($visitors);
+    if ($tenant_flat_office_no) {
+        $visitors->where('tenant_flat_office_no', $tenant_flat_office_no);
     }
+
+    $visitors = $visitors->whereNotIn('visitor_id', $visitorMasterIds)
+        ->get(['full_name', 'visitor_id']);
+
+    return response()->json($visitors);
+}
+
 
     public function storePreapproveVisitorByTenant(Request $request)
     {
@@ -202,4 +204,133 @@ class PreApproveVisitore extends Controller
             ], 500);
         }
     }
+
+ public function getPreApproveVisitorBybuilding(Request $request)
+{
+    $building_id = $request->input('building_id');
+
+    // Validate the building_id parameter
+    if (!$building_id) {
+        return response()->json(['error' => 'Building ID is required'], 400);
+    }
+
+    $visitorMasterIds = Visitor_Master::where('building_id', $building_id)->pluck('visitor_id');
+
+    $visitors = TenantVisitor::where('building_id', $building_id)
+        ->whereNotIn('visitor_id', $visitorMasterIds)
+        ->get(['id', 'full_name', 'visitor_id']);
+
+    return response()->json($visitors);
+}
+
+
+public function getPreApproveVisitorDetails(Request $request)
+    {
+        $visitor_id_pre_approve = $request->input('visitor_id_pre_approve');
+
+        if (!$visitor_id_pre_approve) {
+            return response()->json(['error' => 'Visitor ID is required'], 400);
+        }
+
+        $visitor = TenantVisitor::where('id', $visitor_id_pre_approve)->first();
+
+        if (!$visitor) {
+            return response()->json(['error' => 'Visitor not found'], 404);
+        }
+
+        return response()->json($visitor);
+    }
+
+   public function preApproveVisitorStore(Request $request)
+{
+    try {
+        $visitor_id_pre_approve = $request->input('id_pre_approve_visitor');
+
+        if (!$visitor_id_pre_approve) {
+            return response()->json([
+                'status' => false,
+                'message' => 'id_pre_approve_visitor is required'
+            ], 400);
+        }
+
+        $destinationPath = public_path('assets/images/');
+        $id_file = null;
+        $photo = null;
+
+        // Handle base64 ID proof
+        // if ($request->id_file) {
+        //     $base64Image = $request->id_file;
+        //     $imageParts = explode(";base64,", $base64Image);
+
+        //     if (count($imageParts) == 2) {
+        //         $imageTypeAux = explode("image/", $imageParts[0]);
+        //         $imageType = $imageTypeAux[1] ?? 'png';
+        //         $imageBase64 = base64_decode($imageParts[1]);
+        //         $fileName = time() . '_id_file.' . $imageType;
+
+        //         file_put_contents($destinationPath . $fileName, $imageBase64);
+        //         $idProofPath = 'assets/images/' . $fileName;
+        //     }
+        // }
+ if ($request->hasFile('id_file') && $request->file('id_file')->isValid()) {
+            $id_fileFile = $request->file('id_file');
+            $id_fileFileName = time() . '_id_file.' . $id_fileFile->getClientOriginalExtension();
+            $id_fileFile->move($destinationPath, $id_fileFileName);
+            $id_file = 'assets/images/' . $id_fileFileName;
+        }
+        // Handle visitor photo upload (FormData file)
+        if ($request->hasFile('photo') && $request->file('photo')->isValid()) {
+            $photoFile = $request->file('photo');
+            $photoFileName = time() . '_photo.' . $photoFile->getClientOriginalExtension();
+            $photoFile->move($destinationPath, $photoFileName);
+            $photo = 'assets/images/' . $photoFileName;
+        }
+
+        // Fetch visitor data from TenantVisitor
+        $visitor = TenantVisitor::where('id', $visitor_id_pre_approve)->first();
+        // dd($visitor);
+
+        if (!$visitor) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Pre-approve visitor not found'
+            ], 404);
+        }
+
+        $visitorData = new Visitor_Master();
+        $visitorData->tenant_flat_office_no = $visitor->tenant_flat_office_no;
+        $visitorData->visitor_id = $visitor->visitor_id;
+        $visitorData->date = $visitor->date;
+        $visitorData->full_name = $visitor->full_name;
+        $visitorData->in_time = $visitor->in_time;
+        $visitorData->out_time = $visitor->out_time ?? null;
+        $visitorData->visiter_purpose = $visitor->visiter_purpose;
+        $visitorData->building_id = $visitor->building_id;
+        $visitorData->status = $visitor->status;
+        $visitorData->status_of_visitor = 0;
+        $visitorData->visitor_remark = 'Preapproved';
+        $visitorData->pre_approve_tenant_visitore_id = $visitor->visitor_id;
+        $visitorData->photo = $photo ?? null;
+        $visitorData->id_proof = $id_file ?? null;
+        $visitorData->added_by = $visitor->building_id;
+        $visitorData->created_at = now();
+        // dd($visitorData);
+        $visitorData->save();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Visitor pre-approved successfully',
+            'data' => $visitorData
+        ], 201);
+
+    } catch (\Exception $e) {
+        return response()->json([
+            'status' => false,
+            'message' => 'Something went wrong',
+            'error' => $e->getMessage()
+        ], 500);
+    }
+}
+
+
 }

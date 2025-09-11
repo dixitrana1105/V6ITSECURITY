@@ -28,6 +28,17 @@
                     @endisset
                 </select>
             </div>
+            <div class="flex justify-start items-center mb-4 space-x-2">
+    <label for="building_type" class="whitespace-nowrap"><strong>Filter by Type:</strong></label>
+    <select id="building_type" name="building_type" class="form-input w-40">
+        <option value="">All Types</option>
+        <option value="1" {{ request('building_type') == '1' ? 'selected' : '' }}>Commercial</option>
+        <option value="2" {{ request('building_type') == '2' ? 'selected' : '' }}>Residential</option>
+        <option value="3" {{ request('building_type') == '3' ? 'selected' : '' }}>Commercial & Residential</option>
+        <option value="4" {{ request('building_type') == '4' ? 'selected' : '' }}>School</option>
+    </select>
+</div>
+
         <div class="flex justify-start items-center mb-4 space-x-2">
             <label for="statusFilter" class="whitespace-nowrap"><strong>Filter by Status:</strong></label>
             <select id="statusFilter" name="status" class="form-input w-32" @change="filterStatus($event)">

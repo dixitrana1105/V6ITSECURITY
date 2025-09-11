@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Building;
-
+use Carbon\Carbon;
 use App\Http\Controllers\Controller;
 use App\Models\Building_Master;
 use App\Models\Reader;
@@ -97,6 +97,36 @@ class TenantController extends Controller
 
         return view('building-admin.visitor-log.index', compact('tenants', 'security_data'));
     }
+
+    public function current_visitor_log_index(Request $request)
+    {
+
+        $building_id = Auth::guard('buildingadmin')->user()->id;
+
+         $tenants = Visitor_Master::where('building_id', $building_id)
+        ->whereDate('created_at', Carbon::today()) // 👈 Only today's entries
+        ->get();
+
+    $query = Visitor_Master::where('building_id', $building_id)
+        ->whereDate('created_at', Carbon::today()); // 👈 Filter query as well
+
+        if ($request->filled('tenant_flat_office_no')) {
+            $query->where('tenant_flat_office_no', $request->tenant_flat_office_no);
+        }
+
+        if ($request->filled('dateFrom') && $request->filled('dateTo')) {
+            $query->whereBetween('date', [$request->dateFrom, $request->dateTo]);
+        }
+
+        if ($request->filled('status') && $request->status !== 'all') {
+            $query->where('status', $request->status === 'active' ? 1 : 0);
+        }
+
+        $security_data = $query->get();
+
+        return view('building-admin.visitor-log.current_visitor_log_index', compact('tenants', 'security_data'));
+    }
+
 
     public function store_tenant(Request $request)
     {
