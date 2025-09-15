@@ -170,8 +170,11 @@ Route::post('/school/security/login', [SchoolSecurityController::class, 'login']
 Route::post('/school/login', [SchoolAdminController::class, 'login'])->name('school-admin.login');
 
 Route::any('/building/login', [BuildingsController::class, 'login'])->name('building-admin.login');
+Route::post('/building-tenant/confirm-tenant', [BuildingsTenantController::class, 'confirmTenant'])
+    ->name('building-tenant.confirmTenant');
 
 Route::post('/building-tenant/login', [BuildingsTenantController::class, 'login'])->name('building-tenant.login');
+
 
 Route::post('/building-security/login', [BuildingsSecurityController::class, 'login_building_security'])->name('building-security.login');
 
@@ -392,6 +395,7 @@ Route::get('/building-tenant/visitor-create', [BuildingsTenantVisitorController:
 Route::get('/building-tenant/visitor-index', [BuildingsTenantVisitorController::class, 'index_visitor'])->name('building-tenant.visitor-index');
 Route::post('/building-tenant/block-tenant', [BuildingsTenantVisitorController::class, 'blockTenant'])->name('block-tenant');
 Route::get('/building-tenant/tenant-add-visitor-index', [BuildingsTenantVisitorController::class, 'index_visitor_for_add_tenant'])->name('building-tenant.tenant-add-visitor-index');
+Route::delete('/tenantvisitor/{id}', [BuildingsTenantVisitorController::class, 'destroy'])->name('tenantvisitor.delete');
 
 Route::get('/building-sub-tenant/visitor-index', [BuildingsTenantVisitorController::class, 'index_sub__tenant_visitor'])->name('building-sub-tenant.visitor-index');
 

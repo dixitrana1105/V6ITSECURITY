@@ -130,14 +130,23 @@ class TenantController extends Controller
 
     public function store_tenant(Request $request)
     {
+        $user = Auth::guard('buildingadmin')->user()->id; // building_admin_id
+    $building = Building_Master::find($user);
         $validatedData = $request->validate([
             'date' => 'required',
             'tenantId' => 'required',
             'reader_id' => 'required',
             'flat_office_number' => 'required',
             'sub_user' => 'required',
-            'email' => 'required',
-            'password' => 'required',
+            'email' => [
+                        'required',
+                        'email',
+                        Rule::unique('building_tenant', 'email')
+                            ->where(function ($query) use ($user) {
+                                return $query->where('building_id', $user);
+                            }),
+                    ],
+              'password' => 'required',
             'secretkey' => 'required',
             'name' => 'required',
             'contact' => 'nullable',

@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers\BuildingTenant;
 
 use App\Http\Controllers\Controller;
@@ -30,11 +29,11 @@ class BuildingsTenantController extends Controller
             return redirect()->route('building-sub-tenant.dashboard');
         }
 
-        $currentTime = Carbon::now()->format('H:i:s');
-        $currentDate = Carbon::now();
+        $currentTime  = Carbon::now()->format('H:i:s');
+        $currentDate  = Carbon::now();
         $currentMonth = Carbon::now()->month;
-        $startOfWeek = Carbon::now()->startOfWeek();
-        $endOfWeek = Carbon::now()->endOfWeek();
+        $startOfWeek  = Carbon::now()->startOfWeek();
+        $endOfWeek    = Carbon::now()->endOfWeek();
 
         $added_id = BuildingAdminTenant::where('id', $id)->value('added_by');
 
@@ -78,15 +77,15 @@ class BuildingsTenantController extends Controller
         //     ->sortByDesc('created_at');
 
         // Count BuildingAdminTicket statuses
-        $Buildingnew = BuildingAdminTicket::with('building')->where('role', 'building_tenant')->where('status_of_button', null)->count();
+        $Buildingnew       = BuildingAdminTicket::with('building')->where('role', 'building_tenant')->where('status_of_button', null)->count();
         $BuildingTenantnew = BuildingTenantTicket::with('building')->where('role', 'building_tenant')->where('status_of_button', null)->count();
 
-        $adminOpen = BuildingAdminTicket::where('role', 'building_tenant')->where('status_of_button', 0)->count();
-        $adminHold = BuildingAdminTicket::where('role', 'building_tenant')->where('status_of_button', 1)->count();
+        $adminOpen  = BuildingAdminTicket::where('role', 'building_tenant')->where('status_of_button', 0)->count();
+        $adminHold  = BuildingAdminTicket::where('role', 'building_tenant')->where('status_of_button', 1)->count();
         $adminClose = BuildingAdminTicket::where('role', 'building_tenant')->where('status_of_button', 2)->count();
 
-        $securityOpen = BuildingSecurityTicket::where('role', 'building_tenant')->where('status_of_button', 0)->count();
-        $securityHold = BuildingSecurityTicket::where('role', 'building_tenant')->where('status_of_button', 1)->count();
+        $securityOpen  = BuildingSecurityTicket::where('role', 'building_tenant')->where('status_of_button', 0)->count();
+        $securityHold  = BuildingSecurityTicket::where('role', 'building_tenant')->where('status_of_button', 1)->count();
         $securityClose = BuildingSecurityTicket::where('role', 'building_tenant')->where('status_of_button', 2)->count();
 
         $myTicketCount = BuildingTenantTicket::where('added_by', Auth::guard('buildingtenant')->user()->id)->count();
@@ -96,11 +95,11 @@ class BuildingsTenantController extends Controller
             $myTicketCount + $Buildingnew + $BuildingTenantnew;
 
         $data = [
-            'Open' => $adminOpen + $securityOpen,
-            'Hold' => $adminHold + $securityHold,
-            'Close' => $adminClose + $securityClose,
-            'New' => $BuildingTenantnew + $Buildingnew,
-            'My Tickets' => $myTicketCount,
+            'Open'          => $adminOpen + $securityOpen,
+            'Hold'          => $adminHold + $securityHold,
+            'Close'         => $adminClose + $securityClose,
+            'New'           => $BuildingTenantnew + $Buildingnew,
+            'My Tickets'    => $myTicketCount,
             'Total Tickets' => $totalTickets,
         ];
 
@@ -110,17 +109,56 @@ class BuildingsTenantController extends Controller
             'blocked_visitor', 'sub_tenant', 'data'));
     }
 
+    // public function login(Request $request)
+    // {
+    //     $request->validate([
+    //         'email' => 'required|email',
+    //         'password' => 'required',
+    //         'secret_key' => 'required',
+    //     ]);
+
+    //     if (Auth::guard('buildingtenant')->attempt([
+    //         'email' => $request->email,
+    //         'password' => $request->password,
+    //         'secret_key' => $request->secret_key,
+    //     ])) {
+    //         return redirect()->route('building-tenant.dashboard');
+    //     }
+
+    //     return back()->withErrors([
+    //         'email' => 'The provided credentials do not match our records.',
+    //     ])->withInput($request->only('email'));
+    // }
+
     public function login(Request $request)
     {
         $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
+            'email'      => 'required|email',
+            'password'   => 'required',
             'secret_key' => 'required',
         ]);
 
+        // Get all tenants with same email
+        $tenants = \App\Models\BuildingAdminTenant::with('Building_Master')
+            ->where('email', $request->email)
+            ->get();
+
+        if ($tenants->count() > 1) {
+            // Group tenants by building_id (unique building wise)
+            $tenants = $tenants->unique('building_id');
+
+            return view('building-tenant.select_tenant_page', [
+                'tenants'    => $tenants,
+                'email'      => $request->email,
+                'password'   => $request->password,
+                'secret_key' => $request->secret_key,
+            ]);
+        }
+
+        // If only one tenant exists → attempt login directly
         if (Auth::guard('buildingtenant')->attempt([
-            'email' => $request->email,
-            'password' => $request->password,
+            'email'      => $request->email,
+            'password'   => $request->password,
             'secret_key' => $request->secret_key,
         ])) {
             return redirect()->route('building-tenant.dashboard');
@@ -129,6 +167,35 @@ class BuildingsTenantController extends Controller
         return back()->withErrors([
             'email' => 'The provided credentials do not match our records.',
         ])->withInput($request->only('email'));
+    }
+
+    public function confirmTenant(Request $request)
+    {
+        // dd($request);
+        $request->validate([
+            'email'      => 'required',
+            'password'   => 'required',
+            'secret_key' => 'required',
+            'tenant_id'  => 'required',
+        ]);
+        // dd($request);
+
+        $tenant = \App\Models\BuildingAdminTenant::findOrFail($request->tenant_id);
+        // dd($request);
+
+        if (Auth::guard('buildingtenant')->attempt([
+            'email'       => $request->email,
+            'password'    => $request->password,
+            'secret_key'  => $request->secret_key,
+            'building_id' => $tenant->building_id,
+
+        ])) {
+
+            return redirect()->route('building-tenant.dashboard');
+        }
+
+        return redirect('/')
+            ->withErrors(['email' => 'Login Credetials failed for selected tenant.']);
     }
 
     public function is_not_null_deshboard()
@@ -146,11 +213,11 @@ class BuildingsTenantController extends Controller
         //     // return redirect()->route('building-sub-tenant.dashboard');
         // }
 
-        $currentTime = Carbon::now()->format('H:i:s');
-        $currentDate = Carbon::now();
+        $currentTime  = Carbon::now()->format('H:i:s');
+        $currentDate  = Carbon::now();
         $currentMonth = Carbon::now()->month;
-        $startOfWeek = Carbon::now()->startOfWeek();
-        $endOfWeek = Carbon::now()->endOfWeek();
+        $startOfWeek  = Carbon::now()->startOfWeek();
+        $endOfWeek    = Carbon::now()->endOfWeek();
 
         $added_id = BuildingAdminTenant::where('id', $id)->value('added_by');
 
@@ -179,15 +246,15 @@ class BuildingsTenantController extends Controller
 
         $sub_tenant = BuildingAdminTenant::where('added_by', $added_id)->whereNotNull('sub_tenant_id')
             ->count();
-        $Buildingnew = BuildingAdminTicket::with('building')->where('role', 'building_tenant')->where('status_of_button', null)->count();
+        $Buildingnew       = BuildingAdminTicket::with('building')->where('role', 'building_tenant')->where('status_of_button', null)->count();
         $BuildingTenantnew = BuildingTenantTicket::with('building')->where('role', 'building_tenant')->where('status_of_button', null)->count();
 
-        $adminOpen = BuildingAdminTicket::where('role', 'building_tenant')->where('status_of_button', 0)->count();
-        $adminHold = BuildingAdminTicket::where('role', 'building_tenant')->where('status_of_button', 1)->count();
+        $adminOpen  = BuildingAdminTicket::where('role', 'building_tenant')->where('status_of_button', 0)->count();
+        $adminHold  = BuildingAdminTicket::where('role', 'building_tenant')->where('status_of_button', 1)->count();
         $adminClose = BuildingAdminTicket::where('role', 'building_tenant')->where('status_of_button', 2)->count();
 
-        $securityOpen = BuildingSecurityTicket::where('role', 'building_tenant')->where('status_of_button', 0)->count();
-        $securityHold = BuildingSecurityTicket::where('role', 'building_tenant')->where('status_of_button', 1)->count();
+        $securityOpen  = BuildingSecurityTicket::where('role', 'building_tenant')->where('status_of_button', 0)->count();
+        $securityHold  = BuildingSecurityTicket::where('role', 'building_tenant')->where('status_of_button', 1)->count();
         $securityClose = BuildingSecurityTicket::where('role', 'building_tenant')->where('status_of_button', 2)->count();
 
         $myTicketCount = BuildingTenantTicket::where('added_by', Auth::guard('buildingtenant')->user()->id)->count();
@@ -197,11 +264,11 @@ class BuildingsTenantController extends Controller
             $myTicketCount + $Buildingnew + $BuildingTenantnew;
 
         $data = [
-            'Open' => $adminOpen + $securityOpen,
-            'Hold' => $adminHold + $securityHold,
-            'Close' => $adminClose + $securityClose,
-            'New' => $BuildingTenantnew + $Buildingnew,
-            'My Tickets' => $myTicketCount,
+            'Open'          => $adminOpen + $securityOpen,
+            'Hold'          => $adminHold + $securityHold,
+            'Close'         => $adminClose + $securityClose,
+            'New'           => $BuildingTenantnew + $Buildingnew,
+            'My Tickets'    => $myTicketCount,
             'Total Tickets' => $totalTickets,
         ];
 

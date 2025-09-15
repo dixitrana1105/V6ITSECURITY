@@ -52,6 +52,8 @@
                     <th class="font-bold py-2 px-8">Full Name</th>
                     <th class="font-bold py-2 px-8">In Time</th>
                     <th class="font-bold py-2 px-8">Visitor Purpose</th>
+                    <th class="font-bold py-2 px-8">Status Of Visitor</th>
+
                 </tr>
             </thead>
             <tbody>
@@ -67,6 +69,32 @@
                         <td class="py-2 px-8">{{ $security->full_name }}</td>
                         <td class="py-2 px-8">{{ $security->in_time }}</td>
                         <td class="py-2 px-8">{{ $security->visiter_purpose }}</td>
+                         <td class="py-2 px-8">
+                        @if($security->is_pre_approved)
+  <span class="text-red-600">Out Time: {{ $security->out_time ?? 'N/A' }}</span>                        @else
+
+                            <form action="{{ route('tenantvisitor.delete', $security->id) }}" method="POST"
+                              onsubmit="return confirm('Are you sure to delete this visitor?')">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit"
+                                class="btn btn-danger btn-reject">
+                                Cancel Visitor
+                            </button>
+                        </form>
+                        @endif
+                    </td>
+                    {{-- <td class="py-2 px-8">
+                        <form action="{{ route('tenantvisitor.delete', $security->id) }}" method="POST"
+                              onsubmit="return confirm('Are you sure to delete this visitor?')">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit"
+                                class="btn btn-danger btn-reject">
+                                Cancel Visitor
+                            </button>
+                        </form>
+                    </td> --}}
                     </tr>
                 @endforeach
             </tbody>
@@ -93,5 +121,5 @@
         });
     });
 </script>
-    
+
 </x-layout.default>

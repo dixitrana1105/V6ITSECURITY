@@ -233,14 +233,47 @@ class BuildingsTenantVisitorController extends Controller
 
     }
 
+    // public function index_visitor_for_add_tenant()
+    // {
+
+    //     $bulding_id = Auth::guard('buildingtenant')->user()->building_id;
+
+    //     $security_data = TenantVisitor::where('building_id', $bulding_id)
+    //         ->get();
+
+    //     return view('building-tenant.visitor.pre-approve-index', compact('security_data'));
+    // }
     public function index_visitor_for_add_tenant()
-    {
+{
+    $building_id = Auth::guard('buildingtenant')->user()->building_id;
 
-        $bulding_id = Auth::guard('buildingtenant')->user()->building_id;
+    // Get tenant visitor entries
+    $security_data = TenantVisitor::where('building_id', $building_id)->get();
 
-        $security_data = TenantVisitor::where('building_id', $bulding_id)
-            ->get();
+    // Get all visitor_id from Visitor_Master
+    $visitorMaster = Visitor_Master::where('building_id', $building_id)
+        ->get(['visitor_id', 'out_time']);
 
-        return view('building-tenant.visitor.pre-approve-index', compact('security_data'));
+    // Map visitor_id => out_time for easy lookup
+    $visitorMasterMap = $visitorMaster->pluck('out_time', 'visitor_id')->toArray();
+
+    // Attach extra field for blade use
+    foreach ($security_data as $visitor) {
+        $visitor->is_pre_approved = array_key_exists($visitor->visitor_id, $visitorMasterMap);
+        $visitor->out_time = $visitorMasterMap[$visitor->visitor_id] ?? null;
     }
+
+    return view('building-tenant.visitor.pre-approve-index', compact('security_data'));
+}
+
+
+public function destroy($id)
+{
+    // dd($id);
+    $visitor = TenantVisitor::findOrFail($id);
+    $visitor->delete();
+
+    return redirect()->back()->with('success', 'Visitor deleted successfully.');
+}
+
 }
